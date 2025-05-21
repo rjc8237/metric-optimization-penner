@@ -17,7 +17,7 @@ if(PROJECT_IS_TOP_LEVEL)
   option(USE_COMISO "Use Comiso for field generation" ON)
 
   option(RENDER_TEXTURE "Render results" ON)
-  option(ENABLE_VISUALIZATION "Generate viewers for visualization" OFF)
+  option(ENABLE_VISUALIZATION "Generate viewers for visualization" ON)
 
   option(CHECK_VALIDITY "Check validity pre and post conditions" OFF)
   option(BUILD_CURVATURE_METRIC_TESTS "Build tests" OFF)

@@ -45,6 +45,22 @@
 using namespace Penner;
 using namespace Optimization;
 
+
+std::vector<int> get_free_cones(const std::vector<Scalar>& Th_hat)
+{
+    std::vector<int> free_cones = {};
+    int num_vertices = Th_hat.size();
+    for (int vi = 0; vi < num_vertices; ++vi)
+    {
+        if (!float_equal(Th_hat[vi], 2. * M_PI))
+        {
+            free_cones.push_back(vi);
+        }
+    }
+
+    return free_cones;
+}
+
 int main(int argc, char* argv[])
 {
 #ifdef MULTIPRECISION
@@ -70,6 +86,7 @@ int main(int argc, char* argv[])
     std::string output_dir = "./";
 		EnergyChoice energy_choice = EnergyChoice::log_length;
     bool use_discrete_metric = false;
+    bool use_free_cones = false;
     bool show_parameterization = false;
     auto proj_params = std::make_shared<ProjectionParameters>();
     auto opt_params = std::make_shared<OptimizationParameters>();
@@ -87,6 +104,7 @@ int main(int argc, char* argv[])
         ->check(CLI::NonNegativeNumber);
     app.add_flag("--use_discrete_metric", use_discrete_metric, "Use edge lengths instead of Penner coordinates");
     app.add_flag("--show_parameterization", show_parameterization, "Show final parameterization");
+    app.add_flag("--use_free_cones", use_free_cones, "Let cones have free angles");
     app.add_option("-o,--output", output_dir, "Output directory");
     CLI11_PARSE(app, argc, argv);
 
@@ -117,6 +135,7 @@ int main(int argc, char* argv[])
     // Get initial mesh for optimization
     std::vector<int> vtx_reindex;
     std::vector<int> free_cones = {};
+    if (use_free_cones) free_cones = get_free_cones(Th_hat);
     bool fix_boundary = false;
     std::unique_ptr<DifferentiableConeMetric> cone_metric =
         generate_initial_mesh(V, F, V, F, Th_hat, vtx_reindex, free_cones, fix_boundary, use_discrete_metric);

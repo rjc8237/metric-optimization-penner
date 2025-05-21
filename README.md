@@ -17,8 +17,8 @@ This method generates an approximately isometric parameterization of an input `o
 To install this project on a Unix-based system, use the following standard CMake build procedure:
 
 ```bash
-git clone https://github.com/geometryprocessing/penner-optimization.git
-cd penner-optimization
+git clone https://github.com/rjc8237/metric-optimization-penner.git
+cd metric-optimization-penner
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
