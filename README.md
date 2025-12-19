@@ -42,7 +42,7 @@ The core parameterization method is `bin/optimize_metric`. This executable takes
 
 Supported parameter values for `energy` and `direction` are listed by `bin/optimize_metric --help`.
 
-The input mesh must be a manifold surface with a single connected component. The cone file must be a list of newline separated target vertex cone angles satisfying the discrete Gauss-Bonnet condition. Methods to generate such a cone prescription will be provided soon. The output is a refined mesh with a parameterization and a file of metric coordinate values.
+The input mesh must be a manifold surface with a single connected component. The cone file must be a list of newline separated target vertex cone angles satisfying the discrete Gauss-Bonnet condition. If no cones are provided, they will be inferred automatically through a smooth cross field. The output is a refined mesh with a parameterization and a file of metric coordinate values.
 
 We also provide the executable `bin/optimize_shear` for generating parameterizations using explicit shear coordinate optimization (see paper for details). The executable arguments and output are the same, but the allowed directions are different. This method is in practice much slower to converge than the metric optimization method, but it does have standard formal convergence guarantees.
 

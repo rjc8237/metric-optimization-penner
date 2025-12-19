@@ -37,6 +37,7 @@
 #include "optimization/interface.h"
 #include "optimization/parameterization/refinement.h"
 #include "optimization/util/viewers.h"
+#include "holonomy/field/field.h"
 #include "util/vector.h"
 #include "util/io.h"
 
@@ -92,8 +93,7 @@ int main(int argc, char* argv[])
     auto opt_params = std::make_shared<OptimizationParameters>();
     app.add_option("--mesh", mesh_filename, "Mesh filepath")->check(CLI::ExistingFile)->required();
     app.add_option("--cones", Th_hat_filename, "Cone angle filepath")
-        ->check(CLI::ExistingFile)
-        ->required();
+        ->check(CLI::ExistingFile);
     app.add_option("--energy", energy_choice, "Energy to minimize")
         ->transform(CLI::CheckedTransformer(energy_choice_map, CLI::ignore_case));
     app.add_option("--direction", opt_params->direction_choice, "Descent direction: projected_gradient, projected_newton");
@@ -128,8 +128,16 @@ int main(int argc, char* argv[])
 
     // Get input angles
     std::vector<Scalar> Th_hat_init;
-    spdlog::info("Using cone angles at {}", Th_hat_filename);
-    read_vector_from_file(Th_hat_filename, Th_hat_init);
+    if (Th_hat_filename != "")
+    {
+        spdlog::info("Using cone angles at {}", Th_hat_filename);
+        read_vector_from_file(Th_hat_filename, Th_hat_init);
+    }
+    else
+    {
+        Eigen::MatrixXd frame_field;
+        std::tie(frame_field, Th_hat_init)= Holonomy::generate_cross_field(V, F);
+    }
     std::vector<Scalar> Th_hat = correct_cone_angles(Th_hat_init);
 
     // Get initial mesh for optimization
