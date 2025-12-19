@@ -17,13 +17,14 @@ This method generates an approximately isometric parameterization of an input `o
 To install this project on a Unix-based system, use the following standard CMake build procedure:
 
 ```bash
-git clone https://github.com/rjc8237/metric-optimization-penner.git
+git clone --recurse-submodules https://github.com/rjc8237/metric-optimization-penner.git
 cd metric-optimization-penner
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
 make -j 4
 ```
+**Warning**: Due to currently unresolved library compatibility issues, the cmake flag `-DCMAKE_POLICY_VERSION_MINIMUM=3.5` may be temporarily necessary.
 
 ## Usage
 
